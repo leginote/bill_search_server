@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,162 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model assembly_meeting_records {
+  conf_id                      String   @id @db.VarChar(255)
+  eraco                        String?  @db.VarChar(255)
+  sess                         String?  @db.VarChar(255)
+  dgr                          String?  @db.VarChar(255)
+  conf_dt                      DateTime @db.Date
+  conf_knd                     String?  @db.VarChar(255)
+  cmit_cd                      String   @db.VarChar(255)
+  cmit_nm                      String?  @db.VarChar(255)
+  down_url                     String?  @db.VarChar(255)
+  assembly_meeting_records_pdf Bytes?
+}
+
+model assembly_member_info {
+  id           Int       @id @default(autoincrement())
+  hg_nm        String?   @db.VarChar(50)
+  hj_nm        String?   @db.VarChar(50)
+  eng_nm       String?   @db.VarChar(100)
+  bth_gbn_nm   String?   @db.VarChar(5)
+  bth_date     DateTime? @db.Date
+  job_res_nm   String?   @db.VarChar(150)
+  poly_nm      String?   @db.VarChar(150)
+  orig_nm      String?   @db.VarChar(150)
+  elect_gbn_nm String?   @db.VarChar(50)
+  cmit_nm      String?   @db.VarChar(150)
+  cmits        String?   @db.VarChar(255)
+  reele_gbn_nm String?   @db.VarChar(50)
+  units        String?   @db.VarChar(50)
+  sex_gbn_nm   String?   @db.Char(1)
+  tel_no       String?   @db.VarChar(50)
+  e_mail       String?   @db.VarChar(150)
+  homepage     String?   @db.VarChar(255)
+  staff        String?   @db.VarChar(150)
+  secretary    String?   @db.VarChar(150)
+  secretary2   String?   @db.VarChar(255)
+  mona_cd      String    @unique @db.VarChar(50)
+  mem_title    String?
+  assem_addr   String?   @db.VarChar(255)
+}
+
+model bill_conference_info {
+  id       Int       @id @default(autoincrement())
+  bill_id  String    @unique @db.VarChar(50)
+  bill_nm  String?   @db.VarChar(255)
+  conf_knd String?   @db.VarChar(100)
+  conf_id  String?   @db.VarChar(50)
+  eraco    String?   @db.VarChar(50)
+  sess     String?   @db.VarChar(50)
+  dgr      String?   @db.VarChar(50)
+  conf_dt  DateTime? @db.Date
+  down_url String?
+}
+
+model bill_vote_result {
+  hg_nm             String? @db.VarChar(10)
+  hj_nm             String? @db.VarChar(10)
+  poly_nm           String? @db.VarChar(20)
+  orig_nm           String? @db.VarChar(30)
+  member_no         String? @db.VarChar(20)
+  poly_cd           String? @db.VarChar(10)
+  orig_cd           String? @db.VarChar(10)
+  vote_date         String? @db.VarChar(30)
+  bill_no           String? @db.VarChar(10)
+  bill_name         String? @db.VarChar(255)
+  bill_id           String  @id @unique(map: "unique_bill_id") @db.VarChar(50)
+  law_title         String? @db.VarChar(255)
+  curr_committee    String? @db.VarChar(30)
+  result_vote_mod   String? @db.VarChar(10)
+  dept_cd           String? @db.VarChar(10)
+  curr_committee_id String? @db.VarChar(10)
+  disp_order        String? @db.VarChar(4)
+  bill_url          String?
+  bill_name_url     String?
+  session_cd        String? @db.VarChar(5)
+  currents_cd       String? @db.VarChar(5)
+  age               String? @db.VarChar(4)
+  mona_cd           String? @db.VarChar(10)
+}
+
+model bills {
+  billid                               String  @id
+  innerbillid                          String?
+  billpdf                              Bytes?
+  billnumber                           String?
+  age                                  String?
+  billname                             String?
+  proposer                             String?
+  proposerdivision                     String?
+  proposedate                          String?
+  jurisdictioncommitteecode            String?
+  jurisdictioncommittee                String?
+  submitdate                           String?
+  committeereviewprocessdate           String?
+  detailurl                            String?
+  leadproposer                         String?
+  legislationandjudiciaryprocessresult String?
+  legislationandjudiciaryprocessdate   String?
+  legislationandjudiciarypresentdate   String?
+  legislationandjudiciarysubmitdate    String?
+  committeeprocessresult               String?
+  committeeprocessdate                 String?
+  committeepresentdate                 String?
+  leadproposercode                     String?
+  plenarysessionreviewresult           String?
+  resolutiondate                       String?
+  billsummarycontent                   String?
+}
+
+model hist_assembly_member_info {
+  id       Int     @id @default(autoincrement())
+  daesu    Int
+  dae      String  @db.VarChar(255)
+  dae_nm   String  @db.VarChar(255)
+  name     String  @db.VarChar(255)
+  name_han String? @db.VarChar(255)
+  ja       String? @db.VarChar(255)
+  ho       String? @db.VarChar(255)
+  birth    String? @db.VarChar(20)
+  bon      String? @db.VarChar(255)
+  posi     String? @db.VarChar(255)
+  hak      String?
+  hobby    String? @db.VarChar(255)
+  book     String?
+  sang     String?
+  dead     String? @db.VarChar(20)
+  url      String? @db.VarChar(255)
+
+  @@unique([daesu, name, birth, url], map: "hist_assembly_member_info_uniq")
+}
+
+model total_assembly_member_info {
+  id              Int     @id @default(autoincrement())
+  naas_cd         String  @unique @db.VarChar(50)
+  naas_nm         String  @db.VarChar(100)
+  naas_ch_nm      String? @db.VarChar(100)
+  naas_en_nm      String? @db.VarChar(100)
+  birdy_div_cd    String? @db.Char(1)
+  birdy_dt        String? @db.VarChar(10)
+  dty_nm          String? @db.VarChar(50)
+  plpt_nm         String? @db.VarChar(200)
+  elecd_nm        String? @db.VarChar(200)
+  elecd_div_nm    String? @db.VarChar(100)
+  cmit_nm         String?
+  blng_cmit_nm    String?
+  rlct_div_nm     String? @db.VarChar(100)
+  gtelpt_era_co   String? @db.VarChar(100)
+  ntr_div         String? @db.Char(1)
+  naas_tel_no     String? @db.VarChar(50)
+  naas_email_addr String? @db.VarChar(100)
+  naas_hp_url     String? @db.VarChar(200)
+  aide_nm         String?
+  chf_scrt_nm     String?
+  scrt_nm         String?
+  brf_hst         String?
+  offm_rnum_no    String? @db.VarChar(100)
+  naas_pic        String? @db.VarChar(300)
 }
