@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 
-import { BbsArticleModule } from "./controllers/bbs/BbsArticleModule";
+import { BillModule } from "./controllers/bill/BillModule";
 
 @Module({
-  imports: [BbsArticleModule],
+  imports: [BillModule],
 })
 export class MyModule {}

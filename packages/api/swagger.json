@@ -1,0 +1,265 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "http://localhost:37001",
+      "description": "Local Server"
+    }
+  ],
+  "info": {
+    "version": "0.1.0",
+    "title": "@leginote/server",
+    "description": "Starter kit of Nestia",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "paths": {
+    "/bill": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "title": "Searching options",
+            "description": "Searching options."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "title": "Page number",
+            "description": "Page number."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "title": "Limitation of records per a page",
+            "description": "Limitation of records per a page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IPageIBill.Summarized"
+                }
+              }
+            }
+          }
+        },
+        "x-samchon-accessor": [
+          "bill",
+          "index"
+        ],
+        "x-samchon-controller": "BillController"
+      }
+    },
+    "/bill/{id}": {
+      "get": {
+        "summary": "Get an article with detailed info",
+        "description": "Get an article with detailed info.\n\nOpen an article with detailed info, increasing reading count.",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": " Target articles id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed article info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IBill.Detailed"
+                }
+              }
+            }
+          }
+        },
+        "x-samchon-accessor": [
+          "bill",
+          "at"
+        ],
+        "x-samchon-controller": "BillController"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "IPageIBill.Summarized": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/IPage.IPagination",
+            "title": "Page information",
+            "description": "Page information."
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IBill.Summarized"
+            },
+            "title": "List of records",
+            "description": "List of records."
+          }
+        },
+        "required": [
+          "pagination",
+          "data"
+        ],
+        "description": "A page.\n\nCollection of records with pagination indformation."
+      },
+      "IPage.IPagination": {
+        "type": "object",
+        "properties": {
+          "current": {
+            "type": "integer",
+            "title": "Current page number",
+            "description": "Current page number."
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limitation of records per a page",
+            "description": "Limitation of records per a page."
+          },
+          "records": {
+            "type": "integer",
+            "title": "Count of total records in database",
+            "description": "Count of total records in database."
+          },
+          "pages": {
+            "type": "integer",
+            "title": "Number of total pages",
+            "description": "Number of total pages.\n\nEqual to {@link records} / {@link limit} with ceiling."
+          }
+        },
+        "required": [
+          "current",
+          "limit",
+          "records",
+          "pages"
+        ],
+        "description": "Page information."
+      },
+      "IBill.Summarized": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "IBill.IRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Searching options",
+            "description": "Searching options."
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page number",
+            "description": "Page number."
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limitation of records per a page",
+            "description": "Limitation of records per a page."
+          }
+        },
+        "required": [],
+        "description": "Page request info with some options."
+      },
+      "IBill.Detailed": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "proposer": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "leadProposer": {
+            "type": "string"
+          },
+          "pdfLink": {
+            "type": "string",
+            "format": "url"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "description",
+          "proposer",
+          "leadProposer",
+          "pdfLink",
+          "createdAt",
+          "updatedAt"
+        ]
+      }
+    }
+  },
+  "tags": [],
+  "x-samchon-emended": true
+}
